@@ -1,5 +1,7 @@
 import { extendTheme, ChakraProvider } from '@chakra-ui/react';
 import Router from './router/Router';
+import { store } from './store/store';
+import { Provider } from 'react-redux';
 
 const theme = extendTheme({
   styles: {
@@ -13,9 +15,11 @@ const theme = extendTheme({
 
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <Router />
-    </ChakraProvider>
+    <Provider store={store}>
+      <ChakraProvider theme={theme}>
+        <Router />
+      </ChakraProvider>
+    </Provider>
   );
 }
 

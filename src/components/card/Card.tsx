@@ -1,6 +1,5 @@
 import {
   Button,
-  ButtonGroup,
   Card as ChakraCard,
   CardBody,
   CardFooter,
@@ -9,6 +8,8 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { AiFillLike } from 'react-icons/ai';
+import { AiFillDelete } from 'react-icons/ai';
 
 export default function Card() {
   return (
@@ -31,15 +32,17 @@ export default function Card() {
           </Text>
         </Stack>
       </CardBody>
-      <CardFooter>
-        <ButtonGroup spacing="2">
-          <Button variant="solid" colorScheme="blue">
-            Buy now
-          </Button>
-          <Button variant="ghost" colorScheme="blue">
-            Add to cart
-          </Button>
-        </ButtonGroup>
+      <CardFooter
+        justify="space-between"
+        flexWrap="wrap"
+        sx={{
+          '& > button': {
+            minW: '136px',
+          },
+        }}
+      >
+        <Button flex="1" variant="ghost" leftIcon={<AiFillLike />} />
+        <Button flex="1" variant="ghost" leftIcon={<AiFillDelete />} />
       </CardFooter>
     </ChakraCard>
   );
