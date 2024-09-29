@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { AiFillDelete } from 'react-icons/ai';
 import { BsFillSuitHeartFill } from 'react-icons/bs';
-import { CardTypes } from './CardTypes';
+import { CardProps } from './CardTypes';
 import { truncateText } from '../../utils/functions';
 import { ORIGIN_TEXT_LENGTH } from '../../utils/constants';
 import {
@@ -28,7 +28,7 @@ export default function Card({
   origin,
   location,
   like,
-}: CardTypes) {
+}: CardProps) {
   const dispatch = useAppDispatch();
 
   const deleteItemHandler = (
@@ -69,13 +69,13 @@ export default function Card({
             <Stack mt="6" spacing="3">
               <Heading size="md">{truncateText(name)}</Heading>
               <Text>
-                Откуда родом:{' '}
+                Первая серия:{' '}
                 {origin === 'unknown'
                   ? truncateText('Неизвестно')
                   : truncateText(origin, ORIGIN_TEXT_LENGTH)}
               </Text>
               <Text color="blue.600">
-                Находится:{' '}
+                Последняя:{' '}
                 {location === 'unknown'
                   ? truncateText('Неизвестно')
                   : truncateText(location)}

@@ -16,6 +16,7 @@ import {
 } from '../../store/features/charactersSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
+import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -38,21 +39,17 @@ export default function HomePage() {
 
   if (status === 'loading') {
     return (
-      <Flex minWidth="1000px" minH="100vh" alignItems="center">
-        <Container>
-          <Loading />
-        </Container>
-      </Flex>
+      <LoadingAndErrorLayout>
+        <Loading />
+      </LoadingAndErrorLayout>
     );
   }
 
   if (status === 'failed') {
     return (
-      <Flex minWidth="1000px" minH="100vh" alignItems="center">
-        <Container>
-          <Error error={error} />
-        </Container>
-      </Flex>
+      <LoadingAndErrorLayout>
+        <Error error={error} />
+      </LoadingAndErrorLayout>
     );
   }
 

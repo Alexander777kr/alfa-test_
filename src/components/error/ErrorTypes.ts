@@ -1,3 +1,3 @@
-export type ErrorTypes = {
+export type ErrorProps = {
   error: string | null;
 };

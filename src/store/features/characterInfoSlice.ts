@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { type Character } from "./charactersTypes";
+import { Character } from "../../utils/types";
 import axiosInstance from "../../api/axiosInstance";
 import { CharacterInfoState } from "./characterInfoTypes";
 import type { RootState } from '../store';
@@ -10,7 +10,7 @@ const initialState: CharacterInfoState = {
   error: null
 };
 
-export const fetchCharacters = createAsyncThunk<
+export const fetchCharacterInfo = createAsyncThunk<
   Character,
   string,
   { rejectValue: string }
@@ -34,16 +34,16 @@ const characterInfoSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCharacters.pending, (state) => {
+      .addCase(fetchCharacterInfo.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchCharacters.fulfilled, (state, action: PayloadAction<Character>) => {
+      .addCase(fetchCharacterInfo.fulfilled, (state, action: PayloadAction<Character>) => {
         state.status = 'succeeded';
         state.characterInfo = action.payload;
       })
-      .addCase(fetchCharacters.rejected, (state, action: PayloadAction<string | undefined>) => {
+      .addCase(fetchCharacterInfo.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.status = 'failed';
-        state.error = action.payload || 'Failed to fetch characters';
+        state.error = action.payload || 'Failed to fetch character info';
       });
   },
 });

@@ -1,7 +1,7 @@
-import { Character, Status } from "./charactersTypes";
+import { Character, Status } from "../../utils/types";
 
 export type CharacterInfoState = {
-  characterInfo: Partial<Character>;
+  characterInfo: Character;
   status: Status;
   error: string | null;
 };

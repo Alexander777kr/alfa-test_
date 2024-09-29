@@ -8,6 +8,7 @@ import {
 import Error from '../../components/error/Error';
 import { useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
+import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
 
 export default function Products() {
   const [showCards, setShowCards] = useState('all');
@@ -33,27 +34,23 @@ export default function Products() {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchCharacters()); // Вызываем thunk для загрузки данных
+      dispatch(fetchCharacters());
     }
   }, [status, dispatch]);
 
   if (status === 'loading') {
     return (
-      <Flex minWidth="1000px" minH="100vh" alignItems="center">
-        <Container>
-          <Loading />
-        </Container>
-      </Flex>
+      <LoadingAndErrorLayout>
+        <Loading />
+      </LoadingAndErrorLayout>
     );
   }
 
   if (status === 'failed') {
     return (
-      <Flex minWidth="1000px" minH="100vh" alignItems="center">
-        <Container>
-          <Error error={error} />
-        </Container>
-      </Flex>
+      <LoadingAndErrorLayout>
+        <Error error={error} />
+      </LoadingAndErrorLayout>
     );
   }
 
