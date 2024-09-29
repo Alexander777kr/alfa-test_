@@ -15,7 +15,16 @@ export type Character = {
   image: string;
   episode: string[];
   url: string;
-  created: string; 
+  created: string;
+  like: boolean; 
 }
 
-export type CharacterArray = Character[];
+export type CharactersArray = Character[];
+
+export type Status = 'idle' | 'loading' | 'succeeded' | 'failed';
+
+export type CharactersState = {
+  characters: CharactersArray;
+  status: Status;
+  error: string | null;
+};
