@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-import { CharactersArray, CharactersState } from './charactersTypes';
+import { CharactersApiReceivedState, CharactersState } from './charactersTypes';
 import axiosInstance from '../../api/axiosInstance';
 
 const initialState: CharactersState = {
@@ -10,7 +10,7 @@ const initialState: CharactersState = {
 };
 
 export const fetchCharacters = createAsyncThunk<
-  CharactersArray,
+  CharactersApiReceivedState,
   void,
   { rejectValue: string }
 >(
@@ -18,7 +18,7 @@ export const fetchCharacters = createAsyncThunk<
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get('https://rickandmortyapi.com/api/character');
-      return response.data.results;
+      return response.data;
     } catch (error: unknown) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
@@ -51,11 +51,11 @@ const charactersSlice = createSlice({
       .addCase(fetchCharacters.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchCharacters.fulfilled, (state, action: PayloadAction<CharactersArray>) => {
+      .addCase(fetchCharacters.fulfilled, (state, action: PayloadAction<CharactersApiReceivedState>) => {
         state.status = 'succeeded';
-        const receivedData = action.payload;
+        const receivedData = action.payload.results;
         const modifiedDataWithLike = receivedData.map(character => ({...character, like: false}));
-        state.characters = modifiedDataWithLike; // Добавляем персонажей в store
+        state.characters = modifiedDataWithLike;
       })
       .addCase(fetchCharacters.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.status = 'failed';

@@ -23,6 +23,18 @@ export type CharactersArray = Character[];
 
 export type Status = 'idle' | 'loading' | 'succeeded' | 'failed';
 
+type Info = {
+  count: number;
+  pages: number;
+  next: string | null;
+  prev: string | null;
+};
+
+export type CharactersApiReceivedState = {
+  info: Info;
+  results: CharactersArray;
+};
+
 export type CharactersState = {
   characters: CharactersArray;
   status: Status;

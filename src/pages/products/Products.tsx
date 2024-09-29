@@ -1,4 +1,4 @@
-import { Container, Flex, Grid, Heading } from '@chakra-ui/react';
+import { Button, Container, Flex, Grid, Heading } from '@chakra-ui/react';
 import Card from '../../components/card/Card';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
@@ -6,12 +6,30 @@ import {
   selectCharacters,
 } from '../../store/features/charactersSlice';
 import Error from '../../components/error/Error';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
 
 export default function Products() {
+  const [showCards, setShowCards] = useState('all');
+
   const dispatch = useAppDispatch();
   const { characters, status, error } = useAppSelector(selectCharacters);
+
+  let filteredCharacters = characters;
+
+  if (showCards === 'favorites') {
+    filteredCharacters = filteredCharacters.filter(
+      (character) => character.like === true
+    );
+  }
+
+  const changeCardsHandler = (status: string) => {
+    if (status === 'fav') {
+      setShowCards('favorites');
+    } else {
+      setShowCards('all');
+    }
+  };
 
   useEffect(() => {
     if (status === 'idle') {
@@ -44,6 +62,23 @@ export default function Products() {
       <Heading as="h1" size="xl" textAlign="center" mb={10}>
         Персонажи мультфильма "Рик и Морти"
       </Heading>
+      <Flex flexDirection="row" alignItems="center" mb={10}>
+        <Container maxWidth="1200px" display="flex" justifyContent="flex-end">
+          <Button
+            onClick={() => changeCardsHandler('all')}
+            colorScheme="blue"
+            mr={10}
+          >
+            Все карточки
+          </Button>
+          <Button
+            onClick={() => changeCardsHandler('fav')}
+            colorScheme="purple"
+          >
+            Только избранное
+          </Button>
+        </Container>
+      </Flex>
       <Grid
         templateColumns={{
           md: 'repeat(1, 1fr)',
@@ -51,7 +86,7 @@ export default function Products() {
         }}
         gap={6}
       >
-        {characters.map((character) => (
+        {filteredCharacters.map((character) => (
           <Card
             key={character.id}
             id={character.id}

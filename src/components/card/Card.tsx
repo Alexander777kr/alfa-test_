@@ -19,6 +19,7 @@ import {
   likeCharacter,
 } from '../../store/features/charactersSlice';
 import { useAppDispatch } from '../../store/hooks';
+import { Link } from 'react-router-dom';
 
 export default function Card({
   id,
@@ -30,11 +31,21 @@ export default function Card({
 }: CardTypes) {
   const dispatch = useAppDispatch();
 
-  const deleteItemHandler = (id: number) => {
+  const deleteItemHandler = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: number
+  ) => {
+    event.preventDefault();
+    console.log(event);
     dispatch(deleteCharacterById(id));
   };
 
-  const likeItemHandler = (id: number) => {
+  const likeItemHandler = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: number
+  ) => {
+    event.preventDefault();
+    console.log(event);
     dispatch(likeCharacter(id));
   };
 
@@ -45,47 +56,49 @@ export default function Card({
       justifyContent="center"
       alignItems="center"
     >
-      <ChakraCard maxW="sm">
-        <CardBody>
-          <Image
-            src={image}
-            alt="Green double couch with wooden legs"
-            objectFit="cover"
-            width="100%"
-            borderRadius="lg"
-          />
-          <Stack mt="6" spacing="3">
-            <Heading size="md">{truncateText(name)}</Heading>
-            <Text>
-              Откуда родом:{' '}
-              {origin === 'unknown'
-                ? truncateText('Неизвестно')
-                : truncateText(origin, ORIGIN_TEXT_LENGTH)}
-            </Text>
-            <Text color="blue.600">
-              Находится:{' '}
-              {location === 'unknown'
-                ? truncateText('Неизвестно')
-                : truncateText(location)}
-            </Text>
-          </Stack>
-        </CardBody>
-        <CardFooter justify="space-between" flexWrap="wrap">
-          <Button
-            flex="1"
-            onClick={() => likeItemHandler(id)}
-            colorScheme={like ? 'teal' : 'gray'}
-            variant={like ? 'solid' : 'ghost'}
-            leftIcon={<BsFillSuitHeartFill />}
-          />
-          <Button
-            onClick={() => deleteItemHandler(id)}
-            flex="1"
-            variant="ghost"
-            leftIcon={<AiFillDelete />}
-          />
-        </CardFooter>
-      </ChakraCard>
+      <Link to={`/products/${id}`}>
+        <ChakraCard maxW="sm">
+          <CardBody>
+            <Image
+              src={image}
+              alt="Green double couch with wooden legs"
+              objectFit="cover"
+              width="100%"
+              borderRadius="lg"
+            />
+            <Stack mt="6" spacing="3">
+              <Heading size="md">{truncateText(name)}</Heading>
+              <Text>
+                Откуда родом:{' '}
+                {origin === 'unknown'
+                  ? truncateText('Неизвестно')
+                  : truncateText(origin, ORIGIN_TEXT_LENGTH)}
+              </Text>
+              <Text color="blue.600">
+                Находится:{' '}
+                {location === 'unknown'
+                  ? truncateText('Неизвестно')
+                  : truncateText(location)}
+              </Text>
+            </Stack>
+          </CardBody>
+          <CardFooter justify="space-between" flexWrap="wrap">
+            <Button
+              flex="1"
+              onClick={(event) => likeItemHandler(event, id)}
+              colorScheme={like ? 'teal' : 'gray'}
+              variant={like ? 'solid' : 'ghost'}
+              leftIcon={<BsFillSuitHeartFill />}
+            />
+            <Button
+              onClick={(event) => deleteItemHandler(event, id)}
+              flex="1"
+              variant="ghost"
+              leftIcon={<AiFillDelete />}
+            />
+          </CardFooter>
+        </ChakraCard>
+      </Link>
     </Container>
   );
 }
