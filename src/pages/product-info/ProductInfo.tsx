@@ -17,10 +17,10 @@ export default function ProductInfo() {
   const { characterInfo, status, error } = useAppSelector(selectCharacter);
 
   useEffect(() => {
-    if (status === 'idle' && id !== undefined) {
+    if (id !== undefined) {
       dispatch(fetchCharacterInfo(id));
     }
-  }, [status, dispatch, id]);
+  }, [dispatch, id]);
 
   if (status === 'loading') {
     return (

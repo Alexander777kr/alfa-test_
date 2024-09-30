@@ -2,6 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 import { CharactersApiReceivedState, CharactersState } from './charactersTypes';
 import axiosInstance from '../../api/axiosInstance';
+import { AddCharacter, Character } from '../../utils/types';
+import { episodesNumberArrayToUrls } from '../../utils/functions';
+import { WritableDraft } from 'immer';
 
 const initialState: CharactersState = {
   characters: [],
@@ -44,6 +47,15 @@ const charactersSlice = createSlice({
       if (index !== -1) {
           state.characters[index].like = !state.characters[index].like;
       }
+    },
+    addCharacter: (state, action: PayloadAction<AddCharacter>) => {
+      let shallowCopyPayload = {...action.payload};
+      shallowCopyPayload = {...shallowCopyPayload, origin: {name: shallowCopyPayload.originName!, url: ""}, location: {name: shallowCopyPayload.locationName!, url: "",}, 
+      episode: episodesNumberArrayToUrls(shallowCopyPayload.episodes), url: '', created: new Date().toISOString(), like: false};
+      delete shallowCopyPayload.locationName; 
+      delete shallowCopyPayload.originName;
+
+      state.characters.unshift(shallowCopyPayload  as WritableDraft<Character>);
     }
   },
     extraReducers: (builder) => {
@@ -64,7 +76,7 @@ const charactersSlice = createSlice({
   },
 });
 
-export const { deleteCharacterById, likeCharacter } = charactersSlice.actions;
+export const { deleteCharacterById, likeCharacter, addCharacter } = charactersSlice.actions;
 
 export const selectCharacters = (state: RootState) => state.characters;
 

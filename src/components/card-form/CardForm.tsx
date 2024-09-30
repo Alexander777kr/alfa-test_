@@ -1,0 +1,217 @@
+import {
+  Button,
+  Card,
+  CardBody,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  Select,
+} from '@chakra-ui/react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useAppDispatch } from '../../store/hooks';
+import { addCharacter } from '../../store/features/charactersSlice';
+import { v4 as uuidv4 } from 'uuid';
+import { fromUuidToUniqueNumber } from '../../utils/functions';
+import { useNavigate } from 'react-router-dom';
+
+export default function CardForm() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const formik = useFormik({
+    initialValues: {
+      id: fromUuidToUniqueNumber(uuidv4()),
+      name: '',
+      status: '',
+      species: '',
+      gender: '',
+      originName: '',
+      locationName: '',
+      image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
+      episodes: '',
+      type: '',
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .max(15, 'Поле "Имя" не должно превышать 15 символов')
+        .required('Поле "Имя" обязательно'),
+      status: Yup.string()
+        .test(
+          'not-selected',
+          'Пожалуйста, выберите значение из списка',
+          (value) => value !== 'not_selected'
+        )
+        .required('Поле обязательно для заполнения'),
+      species: Yup.string()
+        .test(
+          'not-selected',
+          'Пожалуйста, выберите значение из списка',
+          (value) => value !== 'not_selected'
+        )
+        .required('Поле обязательно для заполнения'),
+      gender: Yup.string()
+        .test(
+          'not-selected',
+          'Пожалуйста, выберите значение из списка',
+          (value) => value !== 'not_selected'
+        )
+        .required('Поле обязательно для заполнения'),
+      originName: Yup.string()
+        .max(40, 'Это поле не должно превышать 40 символов')
+        .required('Это поле обязательно'),
+      locationName: Yup.string()
+        .max(40, 'Это поле не должно превышать 40 символов')
+        .required('Это поле обязательно'),
+      episodes: Yup.string()
+        .matches(
+          /^(\d+(, )?)*\d$/,
+          'Поле должно содержать цифры, разделённые запятыми и пробелами, и заканчиваться цифрой'
+        )
+        .required('Поле обязательно для заполнения'),
+    }),
+    onSubmit: (values) => {
+      dispatch(addCharacter(values));
+      navigate('/products', { replace: true });
+    },
+  });
+  return (
+    <Card maxW="100%">
+      <CardBody>
+        <Heading as="h1" size="xl" mb={10}>
+          Новый персонаж
+        </Heading>
+        <Heading as="h4" size="md" mb={10}>
+          Заполните поля, все поля являются обязательными
+        </Heading>
+        <form onSubmit={formik.handleSubmit}>
+          <FormControl
+            isInvalid={
+              (formik.errors.name && formik.touched.name) as boolean | undefined
+            }
+          >
+            <FormLabel>Имя</FormLabel>
+            <Input
+              placeholder="Имя персонажа"
+              id="name"
+              type="text"
+              {...formik.getFieldProps('name')}
+            />
+            <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl
+            isInvalid={
+              (formik.errors.status && formik.touched.status) as
+                | boolean
+                | undefined
+            }
+          >
+            <FormLabel>Статус</FormLabel>
+            <Select id="status" {...formik.getFieldProps('status')}>
+              <option value="not_selected">Не выбрано</option>
+              <option value="Alive">Живой(-ая)</option>
+              <option value="Dead">Не живой(-ая)</option>
+              <option value="unknown">Неизвестно</option>
+            </Select>
+            <FormErrorMessage>{formik.errors.status}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl
+            isInvalid={
+              (formik.errors.species && formik.touched.species) as
+                | boolean
+                | undefined
+            }
+          >
+            <FormLabel>Вид</FormLabel>
+            <Select id="species" {...formik.getFieldProps('species')}>
+              <option value="not_selected">Не выбрано</option>
+              <option value="Human">Человек</option>
+              <option value="Alien">Пришелец</option>
+              <option value="Animal">Животное</option>
+              <option value="unknown">Неизвестно</option>
+            </Select>
+            <FormErrorMessage>{formik.errors.species}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl
+            isInvalid={
+              (formik.errors.gender && formik.touched.gender) as
+                | boolean
+                | undefined
+            }
+          >
+            <FormLabel>Пол</FormLabel>
+            <Select id="gender" {...formik.getFieldProps('gender')}>
+              <option value="not_selected">Не выбрано</option>
+              <option value="Female">Женский</option>
+              <option value="Male">Мужской</option>
+              <option value="unknown">Неизвестно</option>
+            </Select>
+            <FormErrorMessage>{formik.errors.gender}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl
+            isInvalid={
+              (formik.errors.originName && formik.touched.originName) as
+                | boolean
+                | undefined
+            }
+          >
+            <FormLabel>Место, где был впервые упомянут персонаж</FormLabel>
+            <Input
+              placeholder="Где впервые упомянут персонаж"
+              id="originName"
+              type="text"
+              {...formik.getFieldProps('originName')}
+            />
+            <FormErrorMessage>{formik.errors.originName}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl
+            isInvalid={
+              (formik.errors.locationName && formik.touched.locationName) as
+                | boolean
+                | undefined
+            }
+          >
+            <FormLabel>Место, где в последний раз был персонаж</FormLabel>
+            <Input
+              placeholder="Где в последний раз упомянут персонаж"
+              id="locationName"
+              type="text"
+              {...formik.getFieldProps('locationName')}
+            />
+            <FormErrorMessage>{formik.errors.locationName}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl
+            isInvalid={
+              (formik.errors.episodes && formik.touched.episodes) as
+                | boolean
+                | undefined
+            }
+          >
+            <FormLabel>Эпизоды</FormLabel>
+            <Input
+              placeholder="Эпизоды (числа) через запятую"
+              id="episodes"
+              type="text"
+              {...formik.getFieldProps('episodes')}
+            />
+            <FormErrorMessage>{formik.errors.episodes}</FormErrorMessage>
+          </FormControl>
+
+          <Input type="hidden" id="image" {...formik.getFieldProps('image')} />
+          <Input type="hidden" id="type" {...formik.getFieldProps('type')} />
+          <Input type="hidden" id="id" {...formik.getFieldProps('id')} />
+          <Button colorScheme="blue" type="submit">
+            Создать
+          </Button>
+        </form>
+      </CardBody>
+    </Card>
+  );
+}

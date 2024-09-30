@@ -9,9 +9,11 @@ import Error from '../../components/error/Error';
 import { useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
 import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
+import { useNavigate } from 'react-router-dom';
 
 export default function Products() {
   const [showCards, setShowCards] = useState('all');
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const { characters, status, error } = useAppSelector(selectCharacters);
@@ -54,6 +56,14 @@ export default function Products() {
     );
   }
 
+  const goToCreateProduct = () => {
+    navigate('/create-product');
+  };
+
+  const goToHomePage = () => {
+    navigate('/');
+  };
+
   return (
     <Container maxW="1200px" px={4} py={16}>
       <Heading as="h1" size="xl" textAlign="center" mb={10}>
@@ -71,8 +81,15 @@ export default function Products() {
           <Button
             onClick={() => changeCardsHandler('fav')}
             colorScheme="purple"
+            mr={10}
           >
             Только избранное
+          </Button>
+          <Button mr={10} colorScheme="purple" onClick={goToCreateProduct}>
+            Создать персонажа
+          </Button>
+          <Button colorScheme="purple" onClick={goToHomePage}>
+            На главную
           </Button>
         </Container>
       </Flex>
@@ -89,8 +106,8 @@ export default function Products() {
             id={character.id}
             image={character.image}
             name={character.name}
-            origin={character.origin.name}
-            location={character.location.name}
+            origin={character?.origin?.name}
+            location={character?.location?.name}
             like={character.like}
           />
         ))}

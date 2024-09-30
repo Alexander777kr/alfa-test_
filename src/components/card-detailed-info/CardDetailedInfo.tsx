@@ -11,40 +11,29 @@ import {
 } from '@chakra-ui/react';
 import { CardDetailedInfoProps } from './CardDetailedInfoTypes';
 import { showEpisodes } from '../../utils/functions';
+import {
+  translateGender,
+  translateSpecies,
+  translateStatus,
+} from '../../translates/functions';
+import { useNavigate } from 'react-router-dom';
 
 export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
   const { name, episode, image, status, species, gender, origin, location } =
     character;
-  let statusRus = status;
-  if (status === 'Alive') {
-    statusRus = 'Живой(-ая)';
-  } else if (status === 'Dead') {
-    statusRus = 'Не живой(-ая)';
-  } else if (status === 'Unknown') {
-    statusRus = 'Неизвестно';
-  }
 
-  let speciesRus = species;
-  if (species === 'Human') {
-    speciesRus = 'Человек';
-  } else if (species === 'Alien') {
-    speciesRus = 'Пришелец';
-  } else if (species === 'Animal') {
-    speciesRus = 'Животное';
-  }
+  const navigate = useNavigate();
 
-  let genderRus = gender;
-  if (gender === 'Female') {
-    genderRus = 'Женский';
-  } else if (gender === 'Male') {
-    genderRus = 'Мужской';
-  }
+  const navigateToProducts = () => {
+    navigate(-1);
+  };
+
   return (
     <Card maxW="100%">
       <CardBody>
         <Image
           width="100%"
-          height="300px"
+          height="200px"
           objectFit="cover"
           src={image}
           alt={name}
@@ -52,9 +41,9 @@ export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
         />
         <Stack mt="6" spacing="3">
           <Heading size="md">{name}</Heading>
-          <Text>Статус: {statusRus}</Text>
-          <Text>Вид: {speciesRus}</Text>
-          <Text>Пол: {genderRus}</Text>
+          <Text>Статус: {translateStatus(status)}</Text>
+          <Text>Вид: {translateSpecies(species)}</Text>
+          <Text>Пол: {translateGender(gender)}</Text>
           {origin !== undefined && (
             <Text>Впервые показано в: {origin.name}</Text>
           )}
@@ -70,8 +59,12 @@ export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
       </CardBody>
       <CardFooter>
         <ButtonGroup spacing="2">
-          <Button variant="solid" colorScheme="blue">
-            Buy now
+          <Button
+            onClick={navigateToProducts}
+            variant="solid"
+            colorScheme="blue"
+          >
+            Назад
           </Button>
           <Button variant="ghost" colorScheme="blue">
             Add to cart
