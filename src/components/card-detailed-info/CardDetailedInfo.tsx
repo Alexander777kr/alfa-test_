@@ -72,9 +72,6 @@ export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
           >
             Назад
           </Button>
-          <Button variant="ghost" colorScheme="blue">
-            Add to cart
-          </Button>
         </ButtonGroup>
       </CardFooter>
     </Card>
