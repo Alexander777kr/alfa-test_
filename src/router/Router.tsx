@@ -23,7 +23,9 @@ const routes = [
   },
 ];
 
-const router = createBrowserRouter(routes, { basename: '/alfa-test' });
+const router = createBrowserRouter(routes, {
+  basename: import.meta.env.BASE_URL,
+});
 
 export default function Router() {
   return <RouterProvider router={router} />;
