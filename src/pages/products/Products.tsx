@@ -5,6 +5,7 @@ import {
   Flex,
   Grid,
   Heading,
+  Input,
   Text,
 } from '@chakra-ui/react';
 import Card from '../../components/card/Card';
@@ -30,6 +31,7 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState<string | null>(
     `${baseUrl}${apiCharacter}?page=${page}`
   );
+  const [searchName, setSearchName] = useState('');
 
   const goToPage = useCallback(
     (page: string, status?: string) => {
@@ -52,6 +54,15 @@ export default function Products() {
     useAppSelector(selectCharacters);
 
   let filteredCharacters = characters;
+
+  if (searchName !== '') {
+    filteredCharacters = filteredCharacters.filter((character) =>
+      character.name
+        .trim()
+        .toLowerCase()
+        .includes(searchName.toLowerCase().trim())
+    );
+  }
 
   if (showCards === 'favorites') {
     filteredCharacters = filteredCharacters.filter(
@@ -148,9 +159,24 @@ export default function Products() {
           </Button>
         </Container>
       </Flex>
-      {filteredCharacters.length === 0 && (
+      <Flex flexDirection="row" alignItems="center" mb={10}>
+        <Container maxWidth="1200px" display="flex" justifyContent="flex-end">
+          <Input
+            placeholder="Поиск по имени персонажа"
+            width="35%"
+            onChange={(e) => setSearchName(e.target.value)}
+            value={searchName}
+          />
+        </Container>
+      </Flex>
+      {filteredCharacters.length === 0 && showCards === 'favorites' && (
         <Flex justifyContent="center" alignItems="center">
           <Text>Избранное отсутствует</Text>
+        </Flex>
+      )}
+      {filteredCharacters.length === 0 && showCards === 'all' && (
+        <Flex justifyContent="center" alignItems="center">
+          <Text>Персонажи отсутствуют</Text>
         </Flex>
       )}
       <Grid

@@ -1,5 +1,5 @@
-export const MAX_TEXT_LENGTH = 20;
-export const ORIGIN_TEXT_LENGTH = 18;
+export const MAX_TEXT_LENGTH = 15;
+export const ORIGIN_TEXT_LENGTH = 15;
 
 export const statusOptions = [
   { value: 'not_selected', label: 'Не выбрано' },
@@ -13,6 +13,7 @@ export const speciesOptions = [
   { value: 'Human', label: 'Человек' },
   { value: 'Alien', label: 'Пришелец' },
   { value: 'Animal', label: 'Животное' },
+  { value: 'Disease', label: 'Болезнь' },
   { value: 'unknown', label: 'Неизвестно' },
 ];
 
