@@ -14,8 +14,16 @@ export type CharactersApiReceivedState = {
   results: CharactersArray;
 };
 
+export type Pagination = {
+  "count": number;
+   "pages": number;
+   "next": string | null;
+   "prev": string | null;
+};
+
 export type CharactersState = {
   characters: CharactersArray;
   status: Status;
   error: string | null;
+  pagination: Pagination;
 };

@@ -25,7 +25,9 @@ export default function HomePage() {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchCharacters()); // Вызываем thunk для загрузки данных
+      dispatch(
+        fetchCharacters('https://rickandmortyapi.com/api/character?page=1')
+      ); // Вызываем thunk для загрузки данных
     }
   }, [status, dispatch]);
 

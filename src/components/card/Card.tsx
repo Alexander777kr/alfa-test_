@@ -36,7 +36,6 @@ export default function Card({
     id: number
   ) => {
     event.preventDefault();
-    console.log(event);
     dispatch(deleteCharacterById(id));
   };
 
@@ -45,7 +44,6 @@ export default function Card({
     id: number
   ) => {
     event.preventDefault();
-    console.log(event);
     dispatch(likeCharacter(id));
   };
 

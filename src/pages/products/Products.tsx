@@ -1,7 +1,8 @@
-import { Button, Container, Flex, Grid, Heading } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, Grid, Heading } from '@chakra-ui/react';
 import Card from '../../components/card/Card';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
+  changeStatusToIdle,
   fetchCharacters,
   selectCharacters,
 } from '../../store/features/charactersSlice';
@@ -13,10 +14,17 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Products() {
   const [showCards, setShowCards] = useState('all');
+  const [currentPage, setCurrentPage] = useState<string | null>(
+    'https://rickandmortyapi.com/api/character?page=1'
+  );
+
+  console.log(currentPage);
+
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { characters, status, error } = useAppSelector(selectCharacters);
+  const { characters, status, error, pagination } =
+    useAppSelector(selectCharacters);
 
   let filteredCharacters = characters;
 
@@ -35,10 +43,10 @@ export default function Products() {
   };
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchCharacters());
+    if (status === 'idle' && currentPage) {
+      dispatch(fetchCharacters(currentPage));
     }
-  }, [status, dispatch]);
+  }, [status, dispatch, currentPage]);
 
   if (status === 'loading') {
     return (
@@ -62,6 +70,20 @@ export default function Products() {
 
   const goToHomePage = () => {
     navigate('/');
+  };
+
+  const handleNextPage = () => {
+    if (pagination.next) {
+      setCurrentPage(pagination.next);
+      dispatch(changeStatusToIdle());
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (pagination.prev) {
+      setCurrentPage(pagination.prev);
+      dispatch(changeStatusToIdle());
+    }
   };
 
   return (
@@ -112,6 +134,25 @@ export default function Products() {
           />
         ))}
       </Grid>
+      <Flex justifyContent="center" alignItems="center" mt={10}>
+        <Box
+          as="button"
+          mr={5}
+          onClick={handlePrevPage}
+          disabled={!pagination.prev}
+          _disabled={{ color: 'gray' }}
+        >
+          Предыдущая страница
+        </Box>
+        <Box
+          as="button"
+          onClick={handleNextPage}
+          disabled={!pagination.next}
+          _disabled={{ color: 'gray' }}
+        >
+          Следующая страница
+        </Box>
+      </Flex>
     </Container>
   );
 }
