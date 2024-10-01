@@ -13,8 +13,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../store/hooks';
 import { addCharacter } from '../../store/features/charactersSlice';
-import { v4 as uuidv4 } from 'uuid';
-import { fromUuidToUniqueNumber } from '../../utils/functions';
+import { getRandomInt } from '../../utils/functions';
 import { useNavigate } from 'react-router-dom';
 import { addCharacterDetailedInfo } from '../../store/features/characterInfoSlice';
 
@@ -23,7 +22,7 @@ export default function CardForm() {
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
-      id: fromUuidToUniqueNumber(uuidv4()),
+      id: getRandomInt(999, 100000),
       name: '',
       status: '',
       species: '',

@@ -49,14 +49,18 @@ const characterInfoSlice = createSlice({
     builder
       .addCase(fetchCharacterInfo.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
+        state.characterInfo = {} as Character;
       })
       .addCase(fetchCharacterInfo.fulfilled, (state, action: PayloadAction<Character>) => {
         state.status = 'succeeded';
+        state.error = null;
         state.characterInfo = action.payload;
       })
       .addCase(fetchCharacterInfo.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.status = 'failed';
         state.error = action.payload || 'Failed to fetch character info';
+        state.characterInfo = {} as Character;
       });
   },
 });

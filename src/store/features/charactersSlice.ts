@@ -62,16 +62,20 @@ const charactersSlice = createSlice({
     builder
       .addCase(fetchCharacters.pending, (state) => {
         state.status = 'loading';
+        state.characters = [];
+        state.error = null;
       })
       .addCase(fetchCharacters.fulfilled, (state, action: PayloadAction<CharactersApiReceivedState>) => {
         state.status = 'succeeded';
         const receivedData = action.payload.results;
         const modifiedDataWithLike = receivedData.map(character => ({...character, like: false}));
         state.characters = modifiedDataWithLike;
+        state.error = null;
       })
       .addCase(fetchCharacters.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.status = 'failed';
         state.error = action.payload || 'Failed to fetch characters';
+        state.characters = [];
       });
   },
 });
