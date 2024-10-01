@@ -1,4 +1,12 @@
-import { Box, Button, Container, Flex, Grid, Heading } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Grid,
+  Heading,
+  Text,
+} from '@chakra-ui/react';
 import Card from '../../components/card/Card';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
@@ -140,6 +148,11 @@ export default function Products() {
           </Button>
         </Container>
       </Flex>
+      {filteredCharacters.length === 0 && (
+        <Flex justifyContent="center" alignItems="center">
+          <Text>Избранное отсутствует</Text>
+        </Flex>
+      )}
       <Grid
         templateColumns={{
           md: 'repeat(1, 1fr)',
