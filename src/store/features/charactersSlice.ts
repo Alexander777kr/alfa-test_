@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { WritableDraft } from 'immer';
 import type { RootState } from '../store';
 import { CharactersApiReceivedState, CharactersState } from './charactersTypes';
 import axiosInstance from '../../api/axiosInstance';
 import { AddCharacter, Character } from '../../utils/types';
 import { episodesNumberArrayToUrls } from '../../utils/functions';
-import { WritableDraft } from 'immer';
 
 const initialPagination = {
     count: 0,

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Button,
   Container,
@@ -6,7 +8,6 @@ import {
   GridItem,
   Image,
 } from '@chakra-ui/react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
@@ -15,7 +16,6 @@ import {
   selectCharacters,
 } from '../../store/features/charactersSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { useEffect } from 'react';
 import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -30,16 +30,16 @@ export default function HomePage() {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchCharacters(`${baseUrl}${apiCharacter}?page=${page}`)); // Вызываем thunk для загрузки данных
+      dispatch(fetchCharacters(`${baseUrl}${apiCharacter}?page=${page}`));
     }
   }, [status, dispatch, page]);
 
   const goToProductsPage = () => {
-    navigate('/products'); // Заменить на нужный путь
+    navigate('/products');
   };
 
   const goToCreateProduct = () => {
-    navigate('/create-product'); // Заменить на нужный путь
+    navigate('/create-product');
   };
 
   if (status === 'loading') {

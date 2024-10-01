@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   ButtonGroup,
@@ -16,7 +17,6 @@ import {
   translateSpecies,
   translateStatus,
 } from '../../translates/functions';
-import { useNavigate } from 'react-router-dom';
 
 export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
   const { name, episode, image, status, species, gender, origin, location } =
@@ -33,7 +33,6 @@ export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
       <CardBody>
         <Image
           width="100%"
-          height="200px"
           objectFit="cover"
           src={image}
           alt={name}

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -14,12 +15,14 @@ import * as Yup from 'yup';
 import { useAppDispatch } from '../../store/hooks';
 import { addCharacter } from '../../store/features/charactersSlice';
 import { getRandomInt } from '../../utils/functions';
-import { useNavigate } from 'react-router-dom';
 import { addCharacterDetailedInfo } from '../../store/features/characterInfoSlice';
 import {
   statusOptions,
   speciesOptions,
   genderOptions,
+  HEADER_TEXT_LENGTH,
+  ORIGIN_TEXT_LENGTH,
+  LOCATION_TEXT_LENGTH,
 } from '../../utils/constants';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
@@ -46,7 +49,10 @@ export default function CardForm() {
     },
     validationSchema: Yup.object({
       name: Yup.string()
-        .max(15, 'Поле "Имя" не должно превышать 15 символов')
+        .max(
+          HEADER_TEXT_LENGTH,
+          `Поле "Имя" не должно превышать ${HEADER_TEXT_LENGTH} символов`
+        )
         .required('Поле "Имя" обязательно'),
       status: Yup.string()
         .test(
@@ -70,10 +76,16 @@ export default function CardForm() {
         )
         .required('Поле обязательно для заполнения'),
       originName: Yup.string()
-        .max(40, 'Это поле не должно превышать 40 символов')
+        .max(
+          ORIGIN_TEXT_LENGTH,
+          `Это поле не должно превышать ${ORIGIN_TEXT_LENGTH} символов`
+        )
         .required('Это поле обязательно'),
       locationName: Yup.string()
-        .max(40, 'Это поле не должно превышать 40 символов')
+        .max(
+          LOCATION_TEXT_LENGTH,
+          `Это поле не должно превышать ${LOCATION_TEXT_LENGTH} символов`
+        )
         .required('Это поле обязательно'),
       episodes: Yup.string()
         .matches(

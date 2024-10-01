@@ -1,15 +1,25 @@
-import { MAX_TEXT_LENGTH } from "./constants";
+import { DEFAULT_TEXT_LENGTH } from "./constants";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiEpisode = import.meta.env.VITE_API_EPISODE;
 
-export function truncateText(text: string  | undefined, maxLength: number = MAX_TEXT_LENGTH): string | undefined {
-  if (text === undefined) {
+export function truncateText(text: string | undefined, maxLength: number = DEFAULT_TEXT_LENGTH): string | undefined {
+  if (!text) {
     return;
   }
+
   if (text.length > maxLength) {
-    return text.slice(0, maxLength) + '...';
+    const words = text.split(' ');
+    let truncatedText = '';
+
+    for (const word of words) {
+      if ((truncatedText + word).length > maxLength) {
+        return truncatedText.trim() + '...';
+      }
+      truncatedText += word + ' ';
+    }
   }
+
   return text;
 }
 

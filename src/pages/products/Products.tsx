@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -12,6 +14,7 @@ import {
   Select,
   Text,
 } from '@chakra-ui/react';
+import ResponsivePagination from 'react-responsive-pagination';
 import Card from '../../components/card/Card';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
@@ -20,46 +23,28 @@ import {
   selectCharacters,
 } from '../../store/features/charactersSlice';
 import Error from '../../components/error/Error';
-import { useCallback, useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
 import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   genderOptions,
   speciesOptions,
   statusOptions,
 } from '../../utils/constants';
+import HeadingTitle from '../../components/heading-title/HeadingTitle';
+import NavButtons from '../../components/nav-buttons/NavButtons';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiCharacter = import.meta.env.VITE_API_CHARACTER;
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = searchParams.get('page') || '1';
+  const page = Number(searchParams.get('page')) || 1;
   const [showCards, setShowCards] = useState('all');
-  const [currentPage, setCurrentPage] = useState<string | null>(
-    `${baseUrl}${apiCharacter}?page=${page}`
-  );
+  const [currentPage, setCurrentPage] = useState<number>(page);
   const [searchName, setSearchName] = useState('');
   const [searchStatus, setSearchStatus] = useState('not_selected');
   const [searchSpecies, setSearchSpecies] = useState('not_selected');
   const [searchGender, setSearchGender] = useState('not_selected');
-
-  const goToPage = useCallback(
-    (page: string, status?: string) => {
-      const params = new URL(page).searchParams;
-      const pageNum = params.get('page')!;
-
-      if (status === 'next') {
-        setSearchParams({ page: String(Number(pageNum) - 1) });
-      } else if (status === 'prev') {
-        setSearchParams({ page: String(Number(pageNum) + 1) });
-      }
-    },
-    [setSearchParams]
-  );
-
-  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const { characters, status, error, pagination } =
@@ -110,17 +95,11 @@ export default function Products() {
 
   useEffect(() => {
     if (status === 'idle' && currentPage) {
-      dispatch(fetchCharacters(currentPage));
+      dispatch(
+        fetchCharacters(`${baseUrl}${apiCharacter}?page=${currentPage}`)
+      );
     }
   }, [status, dispatch, currentPage]);
-
-  useEffect(() => {
-    if (pagination.next) {
-      goToPage(pagination.next, 'next');
-    } else if (pagination.prev) {
-      goToPage(pagination.prev, 'prev');
-    }
-  }, [pagination.next, pagination.prev, goToPage]);
 
   if (status === 'loading') {
     return (
@@ -138,35 +117,17 @@ export default function Products() {
     );
   }
 
-  const goToCreateProduct = () => {
-    navigate('/create-product');
-  };
-
-  const goToHomePage = () => {
-    navigate('/');
-  };
-
-  const handleNextPage = () => {
-    if (pagination.next) {
-      setCurrentPage(pagination.next);
-      dispatch(changeStatusToIdle());
-    }
-  };
-
-  const handlePrevPage = () => {
-    if (pagination.prev) {
-      setCurrentPage(pagination.prev);
-      dispatch(changeStatusToIdle());
-    }
+  const handleChangePage = (page: number) => {
+    setSearchParams({ page: String(page) });
+    dispatch(changeStatusToIdle());
+    setCurrentPage(page);
   };
 
   return (
     <Container maxW="1200px" px={4} py={16}>
-      <Heading as="h1" size="xl" textAlign="center" mb={10}>
-        Персонажи мультфильма "Рик и Морти"
-      </Heading>
+      <HeadingTitle />
       <Flex flexDirection="row" alignItems="center" mb={10}>
-        <Container maxWidth="1200px" display="flex" justifyContent="flex-end">
+        <Container maxWidth="1200px" display="flex" justifyContent="center">
           <Button
             onClick={() => changeCardsHandler('all')}
             colorScheme="blue"
@@ -181,12 +142,7 @@ export default function Products() {
           >
             Только избранное
           </Button>
-          <Button mr={10} colorScheme="purple" onClick={goToCreateProduct}>
-            Создать персонажа
-          </Button>
-          <Button colorScheme="purple" onClick={goToHomePage}>
-            На главную
-          </Button>
+          <NavButtons />
         </Container>
       </Flex>
       <Flex flexDirection="row" alignItems="center" mb={10}>
@@ -283,7 +239,7 @@ export default function Products() {
         ))}
       </Grid>
       <Flex justifyContent="center" alignItems="center" mt={10}>
-        <Box
+        {/* <Box
           as="button"
           mr={5}
           onClick={handlePrevPage}
@@ -299,7 +255,12 @@ export default function Products() {
           _disabled={{ color: 'gray' }}
         >
           Следующая страница
-        </Box>
+        </Box> */}
+        <ResponsivePagination
+          current={currentPage}
+          total={pagination.pages}
+          onPageChange={handleChangePage}
+        />
       </Flex>
     </Container>
   );

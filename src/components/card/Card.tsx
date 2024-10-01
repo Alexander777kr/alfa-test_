@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {
   Button,
   Card as ChakraCard,
@@ -13,13 +14,16 @@ import { AiFillDelete } from 'react-icons/ai';
 import { BsFillSuitHeartFill } from 'react-icons/bs';
 import { CardProps } from './CardTypes';
 import { truncateText } from '../../utils/functions';
-import { ORIGIN_TEXT_LENGTH } from '../../utils/constants';
+import {
+  HEADER_TEXT_LENGTH,
+  LOCATION_TEXT_LENGTH,
+  ORIGIN_TEXT_LENGTH,
+} from '../../utils/constants';
 import {
   deleteCharacterById,
   likeCharacter,
 } from '../../store/features/charactersSlice';
 import { useAppDispatch } from '../../store/hooks';
-import { Link } from 'react-router-dom';
 
 export default function Card({
   id,
@@ -65,18 +69,20 @@ export default function Card({
               borderRadius="lg"
             />
             <Stack mt="6" spacing="3">
-              <Heading size="md">{truncateText(name)}</Heading>
+              <Heading size="md">
+                {truncateText(name, HEADER_TEXT_LENGTH)}
+              </Heading>
               <Text>
                 Первая серия:{' '}
                 {origin === 'unknown'
-                  ? truncateText('Неизвестно')
+                  ? truncateText('Неизвестно', ORIGIN_TEXT_LENGTH)
                   : truncateText(origin, ORIGIN_TEXT_LENGTH)}
               </Text>
               <Text color="blue.600">
                 Последняя:{' '}
                 {location === 'unknown'
-                  ? truncateText('Неизвестно')
-                  : truncateText(location)}
+                  ? truncateText('Неизвестно', LOCATION_TEXT_LENGTH)
+                  : truncateText(location, LOCATION_TEXT_LENGTH)}
               </Text>
             </Stack>
           </CardBody>

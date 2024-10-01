@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { WritableDraft } from 'immer';
 import { AddCharacter, Character } from "../../utils/types";
 import axiosInstance from "../../api/axiosInstance";
 import { CharacterInfoState } from "./characterInfoTypes";
 import type { RootState } from '../store';
 import { episodesNumberArrayToUrls } from "../../utils/functions";
-import { WritableDraft } from 'immer';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiCharacter = import.meta.env.VITE_API_CHARACTER;
