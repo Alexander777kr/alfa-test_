@@ -6,7 +6,7 @@ import {
   GridItem,
   Image,
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
@@ -19,6 +19,8 @@ import { useEffect } from 'react';
 import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
 
 export default function HomePage() {
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get('page') || '1';
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { status, error } = useAppSelector(selectCharacters);
@@ -26,10 +28,12 @@ export default function HomePage() {
   useEffect(() => {
     if (status === 'idle') {
       dispatch(
-        fetchCharacters('https://rickandmortyapi.com/api/character?page=1')
+        fetchCharacters(
+          `https://rickandmortyapi.com/api/character?page=${page}`
+        )
       ); // Вызываем thunk для загрузки данных
     }
-  }, [status, dispatch]);
+  }, [status, dispatch, page]);
 
   const goToProductsPage = () => {
     navigate('/products'); // Заменить на нужный путь

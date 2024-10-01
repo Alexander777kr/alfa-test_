@@ -45,10 +45,16 @@ export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
           <Text>Вид: {translateSpecies(species)}</Text>
           <Text>Пол: {translateGender(gender)}</Text>
           {origin !== undefined && (
-            <Text>Впервые показано в: {origin.name}</Text>
+            <Text>
+              Впервые показано в:{' '}
+              {origin.name === 'unknown' ? 'Неизвестно' : origin.name}
+            </Text>
           )}
           {location !== undefined && (
-            <Text>Последнее известное местонахождение: {location.name}</Text>
+            <Text>
+              Последнее известное местонахождение:{' '}
+              {location.name === 'unknown' ? 'Неизвестно' : location.name}
+            </Text>
           )}
           {episode !== undefined && (
             <Text color="blue.600" fontSize="2xl">

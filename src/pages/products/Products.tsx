@@ -7,18 +7,32 @@ import {
   selectCharacters,
 } from '../../store/features/charactersSlice';
 import Error from '../../components/error/Error';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
 import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export default function Products() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get('page') || '1';
   const [showCards, setShowCards] = useState('all');
   const [currentPage, setCurrentPage] = useState<string | null>(
-    'https://rickandmortyapi.com/api/character?page=1'
+    `https://rickandmortyapi.com/api/character?page=${page}`
   );
 
-  console.log(currentPage);
+  const goToPage = useCallback(
+    (page: string, status?: string) => {
+      const params = new URL(page).searchParams;
+      const pageNum = params.get('page')!;
+
+      if (status === 'next') {
+        setSearchParams({ page: String(Number(pageNum) - 1) });
+      } else if (status === 'prev') {
+        setSearchParams({ page: String(Number(pageNum) + 1) });
+      }
+    },
+    [setSearchParams]
+  );
 
   const navigate = useNavigate();
 
@@ -47,6 +61,14 @@ export default function Products() {
       dispatch(fetchCharacters(currentPage));
     }
   }, [status, dispatch, currentPage]);
+
+  useEffect(() => {
+    if (pagination.next) {
+      goToPage(pagination.next, 'next');
+    } else if (pagination.prev) {
+      goToPage(pagination.prev, 'prev');
+    }
+  }, [pagination.next, pagination.prev, goToPage]);
 
   if (status === 'loading') {
     return (

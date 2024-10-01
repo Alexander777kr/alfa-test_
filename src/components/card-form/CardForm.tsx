@@ -16,6 +16,11 @@ import { addCharacter } from '../../store/features/charactersSlice';
 import { getRandomInt } from '../../utils/functions';
 import { useNavigate } from 'react-router-dom';
 import { addCharacterDetailedInfo } from '../../store/features/characterInfoSlice';
+import {
+  statusOptions,
+  speciesOptions,
+  genderOptions,
+} from '../../utils/constants';
 
 export default function CardForm() {
   const navigate = useNavigate();
@@ -111,10 +116,11 @@ export default function CardForm() {
           >
             <FormLabel>Статус</FormLabel>
             <Select id="status" {...formik.getFieldProps('status')}>
-              <option value="not_selected">Не выбрано</option>
-              <option value="Alive">Живой(-ая)</option>
-              <option value="Dead">Не живой(-ая)</option>
-              <option value="unknown">Неизвестно</option>
+              {statusOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </Select>
             <FormErrorMessage>{formik.errors.status}</FormErrorMessage>
           </FormControl>
@@ -128,11 +134,11 @@ export default function CardForm() {
           >
             <FormLabel>Вид</FormLabel>
             <Select id="species" {...formik.getFieldProps('species')}>
-              <option value="not_selected">Не выбрано</option>
-              <option value="Human">Человек</option>
-              <option value="Alien">Пришелец</option>
-              <option value="Animal">Животное</option>
-              <option value="unknown">Неизвестно</option>
+              {speciesOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </Select>
             <FormErrorMessage>{formik.errors.species}</FormErrorMessage>
           </FormControl>
@@ -146,10 +152,11 @@ export default function CardForm() {
           >
             <FormLabel>Пол</FormLabel>
             <Select id="gender" {...formik.getFieldProps('gender')}>
-              <option value="not_selected">Не выбрано</option>
-              <option value="Female">Женский</option>
-              <option value="Male">Мужской</option>
-              <option value="unknown">Неизвестно</option>
+              {genderOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </Select>
             <FormErrorMessage>{formik.errors.gender}</FormErrorMessage>
           </FormControl>
