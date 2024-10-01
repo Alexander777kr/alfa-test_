@@ -4,7 +4,7 @@ import Products from '../pages/products/Products';
 import CreateProduct from '../pages/create-product/CreateProduct';
 import ProductInfo from '../pages/product-info/ProductInfo';
 
-const router = createBrowserRouter([
+const routes = [
   {
     path: '/',
     element: <HomePage />,
@@ -21,7 +21,9 @@ const router = createBrowserRouter([
     path: '/create-product',
     element: <CreateProduct />,
   },
-]);
+];
+
+const router = createBrowserRouter(routes, { basename: '/alfa-test' });
 
 export default function Router() {
   return <RouterProvider router={router} />;
