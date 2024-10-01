@@ -2,6 +2,7 @@ import { extendTheme, ChakraProvider } from '@chakra-ui/react';
 import Router from './router/Router';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
+import { GoToTop } from 'go-to-top-react';
 
 const theme = extendTheme({
   styles: {
@@ -15,11 +16,14 @@ const theme = extendTheme({
 
 function App() {
   return (
-    <Provider store={store}>
-      <ChakraProvider theme={theme}>
-        <Router />
-      </ChakraProvider>
-    </Provider>
+    <>
+      <Provider store={store}>
+        <ChakraProvider theme={theme}>
+          <Router />
+        </ChakraProvider>
+      </Provider>
+      <GoToTop />
+    </>
   );
 }
 

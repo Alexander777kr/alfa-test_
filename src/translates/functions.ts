@@ -18,6 +18,8 @@ export function translateSpecies(species: string) {
     speciesRus = 'Пришелец';
   } else if (species === 'Animal') {
     speciesRus = 'Животное';
+  } else if (species === 'Robot') {
+    speciesRus = 'Робот';
   }  else if (species === 'Disease') {
     speciesRus = 'Болезнь';
   } else if (species === 'unknown') {

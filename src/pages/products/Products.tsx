@@ -145,6 +145,13 @@ export default function Products() {
           <NavButtons />
         </Container>
       </Flex>
+      <Flex justifyContent="center" alignItems="center" mt={10} mb={10}>
+        <ResponsivePagination
+          current={currentPage}
+          total={pagination.pages}
+          onPageChange={handleChangePage}
+        />
+      </Flex>
       <Flex flexDirection="row" alignItems="center" mb={10}>
         <Container maxWidth="1200px" display="flex" justifyContent="flex-end">
           <Box as="header" bg="gray.100" width="100%" borderRadius="md" p={4}>
@@ -239,23 +246,6 @@ export default function Products() {
         ))}
       </Grid>
       <Flex justifyContent="center" alignItems="center" mt={10}>
-        {/* <Box
-          as="button"
-          mr={5}
-          onClick={handlePrevPage}
-          disabled={!pagination.prev}
-          _disabled={{ color: 'gray' }}
-        >
-          Предыдущая страница
-        </Box>
-        <Box
-          as="button"
-          onClick={handleNextPage}
-          disabled={!pagination.next}
-          _disabled={{ color: 'gray' }}
-        >
-          Следующая страница
-        </Box> */}
         <ResponsivePagination
           current={currentPage}
           total={pagination.pages}

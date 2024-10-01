@@ -15,6 +15,7 @@ export const speciesOptions = [
   { value: 'Human', label: 'Человек' },
   { value: 'Alien', label: 'Пришелец' },
   { value: 'Animal', label: 'Животное' },
+  { value: 'Robot', label: 'Робот' },
   { value: 'Disease', label: 'Болезнь' },
   { value: 'unknown', label: 'Неизвестно' },
 ];
