@@ -3,9 +3,13 @@ import {
   Button,
   Container,
   Flex,
+  FormControl,
+  FormLabel,
   Grid,
   Heading,
+  HStack,
   Input,
+  Select,
   Text,
 } from '@chakra-ui/react';
 import Card from '../../components/card/Card';
@@ -20,6 +24,11 @@ import { useCallback, useEffect, useState } from 'react';
 import Loading from '../../components/loading/Loading';
 import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  genderOptions,
+  speciesOptions,
+  statusOptions,
+} from '../../utils/constants';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiCharacter = import.meta.env.VITE_API_CHARACTER;
@@ -32,6 +41,9 @@ export default function Products() {
     `${baseUrl}${apiCharacter}?page=${page}`
   );
   const [searchName, setSearchName] = useState('');
+  const [searchStatus, setSearchStatus] = useState('not_selected');
+  const [searchSpecies, setSearchSpecies] = useState('not_selected');
+  const [searchGender, setSearchGender] = useState('not_selected');
 
   const goToPage = useCallback(
     (page: string, status?: string) => {
@@ -61,6 +73,24 @@ export default function Products() {
         .trim()
         .toLowerCase()
         .includes(searchName.toLowerCase().trim())
+    );
+  }
+
+  if (searchStatus !== 'not_selected') {
+    filteredCharacters = filteredCharacters.filter(
+      (character) => character.status === searchStatus
+    );
+  }
+
+  if (searchSpecies !== 'not_selected') {
+    filteredCharacters = filteredCharacters.filter(
+      (character) => character.species === searchSpecies
+    );
+  }
+
+  if (searchGender !== 'not_selected') {
+    filteredCharacters = filteredCharacters.filter(
+      (character) => character.gender === searchGender
     );
   }
 
@@ -161,12 +191,66 @@ export default function Products() {
       </Flex>
       <Flex flexDirection="row" alignItems="center" mb={10}>
         <Container maxWidth="1200px" display="flex" justifyContent="flex-end">
-          <Input
-            placeholder="Поиск по имени персонажа"
-            width="35%"
-            onChange={(e) => setSearchName(e.target.value)}
-            value={searchName}
-          />
+          <Box as="header" bg="gray.100" width="100%" borderRadius="md" p={4}>
+            <Heading as="h2" size="md" mb={4}>
+              Фильтры
+            </Heading>
+            <HStack spacing={4} align="flex-start">
+              <FormControl width="35%">
+                <FormLabel>Имя персонажа</FormLabel>
+                <Input
+                  placeholder="Поиск по имени персонажа"
+                  onChange={(e) => setSearchName(e.target.value)}
+                  value={searchName}
+                />
+              </FormControl>
+              <FormControl width="25%">
+                <FormLabel>Статус</FormLabel>
+                <Select
+                  id="status"
+                  name="status"
+                  onChange={(e) => setSearchStatus(e.target.value)}
+                  value={searchStatus}
+                >
+                  {statusOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl width="25%">
+                <FormLabel>Вид</FormLabel>
+                <Select
+                  id="species"
+                  name="species"
+                  onChange={(e) => setSearchSpecies(e.target.value)}
+                  value={searchSpecies}
+                >
+                  {speciesOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl width="25%">
+                <FormLabel>Пол</FormLabel>
+                <Select
+                  id="gender"
+                  name="gender"
+                  onChange={(e) => setSearchGender(e.target.value)}
+                  value={searchGender}
+                >
+                  {genderOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </HStack>
+          </Box>
         </Container>
       </Flex>
       {filteredCharacters.length === 0 && showCards === 'favorites' && (
