@@ -18,9 +18,11 @@ export default function ProductInfo() {
 
   useEffect(() => {
     if (id !== undefined) {
-      dispatch(fetchCharacterInfo(id));
+      if (characterInfo.id !== parseInt(id, 10)) {
+        dispatch(fetchCharacterInfo(id));
+      }
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, characterInfo.id]);
 
   if (status === 'loading') {
     return (

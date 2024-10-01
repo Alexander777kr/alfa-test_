@@ -16,6 +16,7 @@ import { addCharacter } from '../../store/features/charactersSlice';
 import { v4 as uuidv4 } from 'uuid';
 import { fromUuidToUniqueNumber } from '../../utils/functions';
 import { useNavigate } from 'react-router-dom';
+import { addCharacterDetailedInfo } from '../../store/features/characterInfoSlice';
 
 export default function CardForm() {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ export default function CardForm() {
     }),
     onSubmit: (values) => {
       dispatch(addCharacter(values));
+      dispatch(addCharacterDetailedInfo(values));
       navigate('/products', { replace: true });
     },
   });

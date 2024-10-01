@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Character } from "../../utils/types";
+import { AddCharacter, Character } from "../../utils/types";
 import axiosInstance from "../../api/axiosInstance";
 import { CharacterInfoState } from "./characterInfoTypes";
 import type { RootState } from '../store';
+import { episodesNumberArrayToUrls } from "../../utils/functions";
+import { WritableDraft } from 'immer';
 
 const initialState: CharacterInfoState = {
-  characterInfo: {},
+  characterInfo: {} as Character,
   status: 'idle',
   error: null
 };
@@ -31,7 +33,18 @@ export const fetchCharacterInfo = createAsyncThunk<
 const characterInfoSlice = createSlice({
   name: 'characterInfo',
   initialState,
-  reducers: {},
+  reducers: {
+    addCharacterDetailedInfo: (state, action: PayloadAction<AddCharacter>) => {
+      let shallowCopyPayload = {...action.payload};
+      shallowCopyPayload = {...shallowCopyPayload, origin: {name: shallowCopyPayload.originName!, url: ""}, location: {name: shallowCopyPayload.locationName!, url: "",}, 
+      episode: episodesNumberArrayToUrls(shallowCopyPayload.episodes), url: '', created: new Date().toISOString(), like: false};
+      delete shallowCopyPayload.locationName; 
+      delete shallowCopyPayload.originName;
+
+      state.characterInfo = shallowCopyPayload  as WritableDraft<Character>;
+      state.status = 'succeeded';
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCharacterInfo.pending, (state) => {
@@ -47,6 +60,8 @@ const characterInfoSlice = createSlice({
       });
   },
 });
+
+export const { addCharacterDetailedInfo } = characterInfoSlice.actions;
 
 export const selectCharacter = (state: RootState) => state.characterInfo;
 
