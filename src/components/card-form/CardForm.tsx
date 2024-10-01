@@ -22,6 +22,12 @@ import {
   genderOptions,
 } from '../../utils/constants';
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const apiCharacter = import.meta.env.VITE_API_CHARACTER;
+const apiAvatar = import.meta.env.VITE_API_AVATAR;
+
+const imageByDefault = '/19.jpeg';
+
 export default function CardForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -34,7 +40,7 @@ export default function CardForm() {
       gender: '',
       originName: '',
       locationName: '',
-      image: 'https://rickandmortyapi.com/api/character/avatar/19.jpeg',
+      image: `${baseUrl}${apiCharacter}${apiAvatar}${imageByDefault}`,
       episodes: '',
       type: '',
     },
@@ -82,6 +88,11 @@ export default function CardForm() {
       navigate('/products', { replace: true });
     },
   });
+
+  const goToBack = () => {
+    navigate(-1);
+  };
+
   return (
     <Card maxW="100%">
       <CardBody>
@@ -96,6 +107,7 @@ export default function CardForm() {
             isInvalid={
               (formik.errors.name && formik.touched.name) as boolean | undefined
             }
+            mb={5}
           >
             <FormLabel>Имя</FormLabel>
             <Input
@@ -113,6 +125,7 @@ export default function CardForm() {
                 | boolean
                 | undefined
             }
+            mb={5}
           >
             <FormLabel>Статус</FormLabel>
             <Select id="status" {...formik.getFieldProps('status')}>
@@ -131,6 +144,7 @@ export default function CardForm() {
                 | boolean
                 | undefined
             }
+            mb={5}
           >
             <FormLabel>Вид</FormLabel>
             <Select id="species" {...formik.getFieldProps('species')}>
@@ -149,6 +163,7 @@ export default function CardForm() {
                 | boolean
                 | undefined
             }
+            mb={5}
           >
             <FormLabel>Пол</FormLabel>
             <Select id="gender" {...formik.getFieldProps('gender')}>
@@ -167,6 +182,7 @@ export default function CardForm() {
                 | boolean
                 | undefined
             }
+            mb={5}
           >
             <FormLabel>Место, где был впервые упомянут персонаж</FormLabel>
             <Input
@@ -184,6 +200,7 @@ export default function CardForm() {
                 | boolean
                 | undefined
             }
+            mb={5}
           >
             <FormLabel>Место, где в последний раз был персонаж</FormLabel>
             <Input
@@ -201,6 +218,7 @@ export default function CardForm() {
                 | boolean
                 | undefined
             }
+            mb={5}
           >
             <FormLabel>Эпизоды</FormLabel>
             <Input
@@ -215,8 +233,11 @@ export default function CardForm() {
           <Input type="hidden" id="image" {...formik.getFieldProps('image')} />
           <Input type="hidden" id="type" {...formik.getFieldProps('type')} />
           <Input type="hidden" id="id" {...formik.getFieldProps('id')} />
-          <Button colorScheme="blue" type="submit">
+          <Button colorScheme="blue" type="submit" mr={5}>
             Создать
+          </Button>
+          <Button onClick={goToBack} colorScheme="gray">
+            Назад
           </Button>
         </form>
       </CardBody>

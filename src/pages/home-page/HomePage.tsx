@@ -18,6 +18,9 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useEffect } from 'react';
 import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const apiCharacter = import.meta.env.VITE_API_CHARACTER;
+
 export default function HomePage() {
   const [searchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
@@ -27,11 +30,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(
-        fetchCharacters(
-          `https://rickandmortyapi.com/api/character?page=${page}`
-        )
-      ); // Вызываем thunk для загрузки данных
+      dispatch(fetchCharacters(`${baseUrl}${apiCharacter}?page=${page}`)); // Вызываем thunk для загрузки данных
     }
   }, [status, dispatch, page]);
 

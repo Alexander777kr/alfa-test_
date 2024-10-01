@@ -1,5 +1,8 @@
 import { MAX_TEXT_LENGTH } from "./constants";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const apiEpisode = import.meta.env.VITE_API_EPISODE;
+
 export function truncateText(text: string  | undefined, maxLength: number = MAX_TEXT_LENGTH): string | undefined {
   if (text === undefined) {
     return;
@@ -23,7 +26,7 @@ export function episodesNumberArrayToUrls(series: string) {
   const numbers = Array.from(new Set(series.split(',')
   .map(num => parseInt(num.trim(), 10))))
   .sort((a, b) => a - b);
-  const urls = numbers.map(num => `https://rickandmortyapi.com/api/episode/${num}`);
+  const urls = numbers.map(num => `${baseUrl}${apiEpisode}/${num}`);
   return urls;
 }
 

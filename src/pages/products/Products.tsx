@@ -12,12 +12,15 @@ import Loading from '../../components/loading/Loading';
 import LoadingAndErrorLayout from '../../components/loading-and-error-layout/LoadingAndErrorLayout';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const apiCharacter = import.meta.env.VITE_API_CHARACTER;
+
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
   const [showCards, setShowCards] = useState('all');
   const [currentPage, setCurrentPage] = useState<string | null>(
-    `https://rickandmortyapi.com/api/character?page=${page}`
+    `${baseUrl}${apiCharacter}?page=${page}`
   );
 
   const goToPage = useCallback(

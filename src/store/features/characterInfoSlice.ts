@@ -6,6 +6,9 @@ import type { RootState } from '../store';
 import { episodesNumberArrayToUrls } from "../../utils/functions";
 import { WritableDraft } from 'immer';
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+const apiCharacter = import.meta.env.VITE_API_CHARACTER;
+
 const initialState: CharacterInfoState = {
   characterInfo: {} as Character,
   status: 'idle',
@@ -20,7 +23,7 @@ export const fetchCharacterInfo = createAsyncThunk<
   'character/fetchCharacterInfo',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`https://rickandmortyapi.com/api/character/${id}`);
+      const response = await axiosInstance.get(`${baseUrl}${apiCharacter}/${id}`);
       return response.data;
     } catch (error: unknown) {
       if (error instanceof Error) {
