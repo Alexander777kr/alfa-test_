@@ -124,7 +124,7 @@ export default function CardForm({ character, edit }: CardFormProps) {
     <Card maxW="100%">
       <CardBody>
         <Heading as="h1" size="xl" mb={10}>
-          Новый персонаж
+          {edit ? 'Редактирование персонажа' : 'Новый персонаж'}
         </Heading>
         <Heading as="h4" size="md" mb={10}>
           Заполните поля, все поля являются обязательными
