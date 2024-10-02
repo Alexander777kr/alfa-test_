@@ -68,7 +68,7 @@ export default function CardForm({ character, edit }: CardFormProps) {
           HEADER_TEXT_LENGTH_VALIDATION,
           `Поле "Имя" не должно превышать ${HEADER_TEXT_LENGTH_VALIDATION} символов`
         )
-        .required('Поле "Имя" обязательно'),
+        .required('Поле обязательно для заполнения'),
       status: Yup.string()
         .test(
           'not-selected',
@@ -95,13 +95,13 @@ export default function CardForm({ character, edit }: CardFormProps) {
           ORIGIN_TEXT_LENGTH_VALIDATION,
           `Это поле не должно превышать ${ORIGIN_TEXT_LENGTH_VALIDATION} символов`
         )
-        .required('Это поле обязательно'),
+        .required('Поле обязательно для заполнения'),
       locationName: Yup.string()
         .max(
           LOCATION_TEXT_LENGTH_VALIDATION,
           `Это поле не должно превышать ${LOCATION_TEXT_LENGTH_VALIDATION} символов`
         )
-        .required('Это поле обязательно'),
+        .required('Поле обязательно для заполнения'),
       episodes: Yup.string()
         .matches(
           /^(\d+(, )?)*\d$/,
