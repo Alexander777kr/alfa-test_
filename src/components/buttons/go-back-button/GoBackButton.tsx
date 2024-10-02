@@ -1,5 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { IoIosArrowRoundBack } from 'react-icons/io';
 
 export default function GoBackButton() {
   const navigate = useNavigate();
@@ -9,7 +10,12 @@ export default function GoBackButton() {
   };
 
   return (
-    <Button onClick={navigateToProducts} variant="solid" colorScheme="blue">
+    <Button
+      leftIcon={<IoIosArrowRoundBack />}
+      onClick={navigateToProducts}
+      variant="solid"
+      colorScheme="gray"
+    >
       Назад
     </Button>
   );

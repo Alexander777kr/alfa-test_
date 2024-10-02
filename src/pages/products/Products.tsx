@@ -32,6 +32,8 @@ import {
 } from '../../utils/constants';
 import HeadingTitle from '../../components/heading-title/HeadingTitle';
 import NavButtons from '../../components/buttons/nav-buttons/NavButtons';
+import { GiCharacter } from 'react-icons/gi';
+import { MdFavorite } from 'react-icons/md';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiCharacter = import.meta.env.VITE_API_CHARACTER;
@@ -132,10 +134,12 @@ export default function Products() {
             onClick={() => changeCardsHandler('all')}
             colorScheme="blue"
             mr={10}
+            leftIcon={<GiCharacter />}
           >
             Все карточки
           </Button>
           <Button
+            leftIcon={<MdFavorite />}
             onClick={() => changeCardsHandler('fav')}
             colorScheme="purple"
             mr={10}

@@ -28,6 +28,7 @@ import {
   LOCATION_TEXT_LENGTH_VALIDATION,
 } from '../../utils/constants';
 import { CardFormProps } from './CardFormTypes';
+import GoBackButton from '../buttons/go-back-button/GoBackButton';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiCharacter = import.meta.env.VITE_API_CHARACTER;
@@ -118,10 +119,6 @@ export default function CardForm({ character, edit }: CardFormProps) {
       navigate('/products');
     },
   });
-
-  const goToBack = () => {
-    navigate(-1);
-  };
 
   return (
     <Card maxW="100%">
@@ -266,9 +263,7 @@ export default function CardForm({ character, edit }: CardFormProps) {
           <Button colorScheme="blue" type="submit" mr={5}>
             {edit ? 'Сохранить редактирование' : 'Создать'}
           </Button>
-          <Button onClick={goToBack} colorScheme="gray">
-            Назад
-          </Button>
+          <GoBackButton />
         </form>
       </CardBody>
     </Card>

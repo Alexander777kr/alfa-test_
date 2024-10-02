@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react';
 import { NavButtonsProps } from './NavButtonsTypes';
+import { IoIosCreate } from 'react-icons/io';
 
 export default function NavButtons({
   goToCardFormBtn = true,
@@ -16,7 +17,12 @@ export default function NavButtons({
   return (
     <>
       {goToCardFormBtn && (
-        <Button mr={10} colorScheme="purple" onClick={goToCreateProduct}>
+        <Button
+          leftIcon={<IoIosCreate />}
+          mr={10}
+          colorScheme="purple"
+          onClick={goToCreateProduct}
+        >
           Создать персонажа
         </Button>
       )}

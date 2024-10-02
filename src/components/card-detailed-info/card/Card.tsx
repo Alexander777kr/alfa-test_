@@ -17,6 +17,7 @@ import {
 } from '../../../translates/functions';
 import GoBackButton from '../../buttons/go-back-button/GoBackButton';
 import { CardProps } from './CardTypes';
+import { IoIosCreate } from 'react-icons/io';
 
 export default function Card({ character, setEditCard }: CardProps) {
   const { name, episode, image, status, species, gender, origin, location } =
@@ -57,7 +58,12 @@ export default function Card({ character, setEditCard }: CardProps) {
       </CardBody>
       <CardFooter>
         <ButtonGroup spacing="2">
-          <Button colorScheme="orange" mr={5} onClick={() => setEditCard(true)}>
+          <Button
+            leftIcon={<IoIosCreate />}
+            colorScheme="orange"
+            mr={5}
+            onClick={() => setEditCard(true)}
+          >
             Редактировать
           </Button>
           <GoBackButton />
