@@ -3,6 +3,10 @@ export const ORIGIN_TEXT_LENGTH = 23;
 export const LOCATION_TEXT_LENGTH = 23;
 export const DEFAULT_TEXT_LENGTH = 15;
 
+export const HEADER_TEXT_LENGTH_VALIDATION = 40;
+export const ORIGIN_TEXT_LENGTH_VALIDATION = 40;
+export const LOCATION_TEXT_LENGTH_VALIDATION = 40;
+
 export const statusOptions = [
   { value: 'not_selected', label: 'Не выбрано' },
   { value: 'Alive', label: 'Живой(-ая)' },

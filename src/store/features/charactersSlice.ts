@@ -4,7 +4,7 @@ import type { RootState } from '../store';
 import { CharactersApiReceivedState, CharactersState } from './charactersTypes';
 import axiosInstance from '../../api/axiosInstance';
 import { AddCharacter, Character } from '../../utils/types';
-import { episodesNumberArrayToUrls } from '../../utils/functions';
+import { createShallowCopyPayload } from '../../utils/functions';
 
 const initialPagination = {
     count: 0,
@@ -57,13 +57,16 @@ const charactersSlice = createSlice({
       }
     },
     addCharacter: (state, action: PayloadAction<AddCharacter>) => {
-      let shallowCopyPayload = {...action.payload};
-      shallowCopyPayload = {...shallowCopyPayload, origin: {name: shallowCopyPayload.originName!, url: ""}, location: {name: shallowCopyPayload.locationName!, url: "",}, 
-      episode: episodesNumberArrayToUrls(shallowCopyPayload.episodes), url: '', created: new Date().toISOString(), like: false};
-      delete shallowCopyPayload.locationName; 
-      delete shallowCopyPayload.originName;
+      const shallowCopyPayload = createShallowCopyPayload(action.payload);
 
       state.characters.unshift(shallowCopyPayload  as WritableDraft<Character>);
+    },
+    modifyCharacter: (state, action: PayloadAction<AddCharacter>) => {
+      const shallowCopyPayload = createShallowCopyPayload(action.payload);
+
+      state.characters = state.characters.map(character =>
+        character.id === action.payload.id ? { ...character, ...shallowCopyPayload } : character
+      );
     },
     changeStatusToIdle: (state) => {
       state.status = 'idle';
@@ -95,7 +98,7 @@ const charactersSlice = createSlice({
   },
 });
 
-export const { deleteCharacterById, likeCharacter, addCharacter, changeStatusToIdle } = charactersSlice.actions;
+export const { deleteCharacterById, likeCharacter, addCharacter, changeStatusToIdle, modifyCharacter } = charactersSlice.actions;
 
 export const selectCharacters = (state: RootState) => state.characters;
 

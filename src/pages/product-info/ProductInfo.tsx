@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Flex } from '@chakra-ui/react';
-import CardDetailedInfo from '../../components/card-detailed-info/CardDetailedInfo';
+import CardDetailedInfoLayout from '../../components/card-detailed-info/layout/CardDetailedInfoLayout';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
   fetchCharacterInfo,
@@ -11,7 +11,7 @@ import LoadingAndErrorLayout from '../../components/loading-and-error-layout/Loa
 import Loading from '../../components/loading/Loading';
 import Error from '../../components/error/Error';
 import HeadingTitle from '../../components/heading-title/HeadingTitle';
-import NavButtons from '../../components/nav-buttons/NavButtons';
+import NavButtons from '../../components/buttons/nav-buttons/NavButtons';
 
 export default function ProductInfo() {
   const { id } = useParams();
@@ -63,7 +63,7 @@ export default function ProductInfo() {
         </Container>
 
         <Container display="flex" justifyContent="center" alignItems="center">
-          <CardDetailedInfo character={characterInfo} />
+          <CardDetailedInfoLayout character={characterInfo} />
         </Container>
       </Flex>
     </Container>

@@ -1,8 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import {
   Button,
   ButtonGroup,
-  Card,
+  Card as ChakraCard,
   CardBody,
   CardFooter,
   Heading,
@@ -10,26 +9,20 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { CardDetailedInfoProps } from './CardDetailedInfoTypes';
-import { showEpisodes } from '../../utils/functions';
+import { showEpisodes } from '../../../utils/functions';
 import {
   translateGender,
   translateSpecies,
   translateStatus,
-} from '../../translates/functions';
+} from '../../../translates/functions';
+import GoBackButton from '../../buttons/go-back-button/GoBackButton';
+import { CardProps } from './CardTypes';
 
-export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
+export default function Card({ character, setEditCard }: CardProps) {
   const { name, episode, image, status, species, gender, origin, location } =
     character;
-
-  const navigate = useNavigate();
-
-  const navigateToProducts = () => {
-    navigate(-1);
-  };
-
   return (
-    <Card maxW="100%">
+    <ChakraCard maxW="100%">
       <CardBody>
         <Image
           width="100%"
@@ -64,15 +57,12 @@ export default function CardDetailedInfo({ character }: CardDetailedInfoProps) {
       </CardBody>
       <CardFooter>
         <ButtonGroup spacing="2">
-          <Button
-            onClick={navigateToProducts}
-            variant="solid"
-            colorScheme="blue"
-          >
-            Назад
+          <Button colorScheme="orange" mr={5} onClick={() => setEditCard(true)}>
+            Редактировать
           </Button>
+          <GoBackButton />
         </ButtonGroup>
       </CardFooter>
-    </Card>
+    </ChakraCard>
   );
 }

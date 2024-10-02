@@ -1,7 +1,7 @@
 import { Container, Flex } from '@chakra-ui/react';
 import CardForm from '../../components/card-form/CardForm';
 import HeadingTitle from '../../components/heading-title/HeadingTitle';
-import NavButtons from '../../components/nav-buttons/NavButtons';
+import NavButtons from '../../components/buttons/nav-buttons/NavButtons';
 
 export default function CreateProduct() {
   return (

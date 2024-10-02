@@ -13,17 +13,21 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../store/hooks';
-import { addCharacter } from '../../store/features/charactersSlice';
-import { getRandomInt } from '../../utils/functions';
+import {
+  addCharacter,
+  modifyCharacter,
+} from '../../store/features/charactersSlice';
+import { getRandomInt, showEpisodes } from '../../utils/functions';
 import { addCharacterDetailedInfo } from '../../store/features/characterInfoSlice';
 import {
   statusOptions,
   speciesOptions,
   genderOptions,
-  HEADER_TEXT_LENGTH,
-  ORIGIN_TEXT_LENGTH,
-  LOCATION_TEXT_LENGTH,
+  HEADER_TEXT_LENGTH_VALIDATION,
+  ORIGIN_TEXT_LENGTH_VALIDATION,
+  LOCATION_TEXT_LENGTH_VALIDATION,
 } from '../../utils/constants';
+import { CardFormProps } from './CardFormTypes';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiCharacter = import.meta.env.VITE_API_CHARACTER;
@@ -31,27 +35,37 @@ const apiAvatar = import.meta.env.VITE_API_AVATAR;
 
 const imageByDefault = '/19.jpeg';
 
-export default function CardForm() {
+export default function CardForm({ character, edit }: CardFormProps) {
+  const id = character?.id;
+  const name = character?.name;
+  const episode = character?.episode || [];
+  const image = character?.image;
+  const status = character?.status;
+  const species = character?.species;
+  const gender = character?.gender;
+  const origin = character?.origin;
+  const location = character?.location;
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
-      id: getRandomInt(999, 100000),
-      name: '',
-      status: '',
-      species: '',
-      gender: '',
-      originName: '',
-      locationName: '',
-      image: `${baseUrl}${apiCharacter}${apiAvatar}${imageByDefault}`,
-      episodes: '',
+      id: id || getRandomInt(999, 100000),
+      name: name || '',
+      status: status || '',
+      species: species || '',
+      gender: gender || '',
+      originName: origin?.name || '',
+      locationName: location?.name || '',
+      image: image || `${baseUrl}${apiCharacter}${apiAvatar}${imageByDefault}`,
+      episodes: showEpisodes(episode) || '',
       type: '',
     },
     validationSchema: Yup.object({
       name: Yup.string()
         .max(
-          HEADER_TEXT_LENGTH,
-          `Поле "Имя" не должно превышать ${HEADER_TEXT_LENGTH} символов`
+          HEADER_TEXT_LENGTH_VALIDATION,
+          `Поле "Имя" не должно превышать ${HEADER_TEXT_LENGTH_VALIDATION} символов`
         )
         .required('Поле "Имя" обязательно'),
       status: Yup.string()
@@ -77,14 +91,14 @@ export default function CardForm() {
         .required('Поле обязательно для заполнения'),
       originName: Yup.string()
         .max(
-          ORIGIN_TEXT_LENGTH,
-          `Это поле не должно превышать ${ORIGIN_TEXT_LENGTH} символов`
+          ORIGIN_TEXT_LENGTH_VALIDATION,
+          `Это поле не должно превышать ${ORIGIN_TEXT_LENGTH_VALIDATION} символов`
         )
         .required('Это поле обязательно'),
       locationName: Yup.string()
         .max(
-          LOCATION_TEXT_LENGTH,
-          `Это поле не должно превышать ${LOCATION_TEXT_LENGTH} символов`
+          LOCATION_TEXT_LENGTH_VALIDATION,
+          `Это поле не должно превышать ${LOCATION_TEXT_LENGTH_VALIDATION} символов`
         )
         .required('Это поле обязательно'),
       episodes: Yup.string()
@@ -95,9 +109,13 @@ export default function CardForm() {
         .required('Поле обязательно для заполнения'),
     }),
     onSubmit: (values) => {
-      dispatch(addCharacter(values));
+      if (edit) {
+        dispatch(modifyCharacter(values));
+      } else {
+        dispatch(addCharacter(values));
+      }
       dispatch(addCharacterDetailedInfo(values));
-      navigate('/products', { replace: true });
+      navigate('/products');
     },
   });
 
@@ -246,7 +264,7 @@ export default function CardForm() {
           <Input type="hidden" id="type" {...formik.getFieldProps('type')} />
           <Input type="hidden" id="id" {...formik.getFieldProps('id')} />
           <Button colorScheme="blue" type="submit" mr={5}>
-            Создать
+            {edit ? 'Сохранить редактирование' : 'Создать'}
           </Button>
           <Button onClick={goToBack} colorScheme="gray">
             Назад

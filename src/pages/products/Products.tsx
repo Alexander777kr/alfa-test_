@@ -31,7 +31,7 @@ import {
   statusOptions,
 } from '../../utils/constants';
 import HeadingTitle from '../../components/heading-title/HeadingTitle';
-import NavButtons from '../../components/nav-buttons/NavButtons';
+import NavButtons from '../../components/buttons/nav-buttons/NavButtons';
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiCharacter = import.meta.env.VITE_API_CHARACTER;

@@ -1,4 +1,5 @@
 import { DEFAULT_TEXT_LENGTH } from "./constants";
+import { AddCharacter } from "./types";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiEpisode = import.meta.env.VITE_API_EPISODE;
@@ -44,4 +45,13 @@ export function getRandomInt(min: number, max: number): number {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export function createShallowCopyPayload(payload: AddCharacter) {
+  let shallowCopyPayload = {...payload};
+      shallowCopyPayload = {...shallowCopyPayload, origin: {name: shallowCopyPayload.originName!, url: ""}, location: {name: shallowCopyPayload.locationName!, url: "",}, 
+      episode: episodesNumberArrayToUrls(shallowCopyPayload.episodes), url: '', created: new Date().toISOString(), like: false};
+      delete shallowCopyPayload.locationName; 
+      delete shallowCopyPayload.originName;
+  return shallowCopyPayload;
 }

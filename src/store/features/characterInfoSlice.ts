@@ -4,7 +4,7 @@ import { AddCharacter, Character } from "../../utils/types";
 import axiosInstance from "../../api/axiosInstance";
 import { CharacterInfoState } from "./characterInfoTypes";
 import type { RootState } from '../store';
-import { episodesNumberArrayToUrls } from "../../utils/functions";
+import { createShallowCopyPayload } from "../../utils/functions";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const apiCharacter = import.meta.env.VITE_API_CHARACTER;
@@ -38,11 +38,7 @@ const characterInfoSlice = createSlice({
   initialState,
   reducers: {
     addCharacterDetailedInfo: (state, action: PayloadAction<AddCharacter>) => {
-      let shallowCopyPayload = {...action.payload};
-      shallowCopyPayload = {...shallowCopyPayload, origin: {name: shallowCopyPayload.originName!, url: ""}, location: {name: shallowCopyPayload.locationName!, url: "",}, 
-      episode: episodesNumberArrayToUrls(shallowCopyPayload.episodes), url: '', created: new Date().toISOString(), like: false};
-      delete shallowCopyPayload.locationName; 
-      delete shallowCopyPayload.originName;
+      const shallowCopyPayload = createShallowCopyPayload(action.payload);
 
       state.characterInfo = shallowCopyPayload  as WritableDraft<Character>;
       state.status = 'succeeded';
